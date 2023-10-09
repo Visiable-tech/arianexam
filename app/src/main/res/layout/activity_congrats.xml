@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CongratsActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        app:lottie_rawRes="@raw/congrats"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lottie1"/>
+    <com.airbnb.lottie.LottieAnimationView
+        app:lottie_rawRes="@raw/congrats2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lottie2"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/themecolor"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="You have successfully completed the examination!"
+        android:id="@+id/text"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

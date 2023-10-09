@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ResultActivity">
+        <!--<androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/analysisreport"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textSize="@dimen/_15ssp"
+            android:textColor="@color/red"
+            android:layout_centerHorizontal="true"
+            />-->
+
+        <!--<ir.mahozad.android.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            />-->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/wrongrel"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            >
+            <View
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/green"
+                android:layout_centerVertical="true"
+                android:id="@+id/view1"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/view1"
+                android:id="@+id/correctans"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/green"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/pieChart"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:id="@+id/wrongrel"
+            >
+            <View
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/wrongred"
+                android:layout_centerVertical="true"
+                android:id="@+id/view2"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/view2"
+                android:id="@+id/wrongtans"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/wrongred"
+                />
+        </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/homeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/red"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="Go to Home" />
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:SpinKit_Color="@color/red" />
+    </RelativeLayout>
+</layout>

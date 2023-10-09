@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">OTSE</string>
+    <string name="login">Sign in</string>
+    <string name="register">Sign up</string>
+    <string name="enterusername">Enter username</string>
+    <string name="enterpassword">Enter password</string>
+    <string name="entername">Enter name</string>
+    <string name="dob">Date of birth</string>
+    <string name="gender">Select gender</string>
+    <string name="selectdob">Select Date of birth</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="blank">Field cannot be blank</string>
+    <string name="data_not_found">data not found</string>
+    <string name="no_internet">No Network Available</string>
+    <string name="exam">Examination: </string>
+    <string name="cls">Class: </string>
+    <string name="subject">Subject: </string>
+    <string name="totqus">Total question: </string>
+    <string name="duration">Duration: </string>
+    <string name="date">Exam date: </string>
+    <string name="marks">Total marks: </string>
+    <string name="instruction">Instruction\n</string>
+    <string name="startexam">Start exam</string>
+    <!--<string name="questionno">Question number: </string>-->
+    <string name="questionno">Q.</string>
+    <string name="answer">Answers: </string>
+    <string name="swipe">Swipe right for next question >></string>
+    <string name="submitans">Submit answer</string>
+    <string name="finish">Finish</string>
+    <string name="correct">Correct answer:</string>
+    <string name="wrong">Wrong answer:</string>
+    <string name="analysisreport">Analysis Report</string>
+    <string name="overview">Overview</string>
+</resources>

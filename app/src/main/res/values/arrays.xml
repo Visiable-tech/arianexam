@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="indicator_colors">
+        <item>@color/lightred1</item>
+        <!--Default-->
+        <item>@color/lightred1</item>
+        <!--Wrong-->
+        <item>@color/lightred1</item>
+        <!--Right-->
+        <item>@color/lightred1</item>
+        <!--Skipped-->
+        <item>@color/lightred1</item>
+        <!--Current-->
+        <item>@color/lightred1</item>
+        <!--Processed-->
+
+    </array>
+    <array name="border_state_colors">
+        <item>@color/tabTextColor</item>
+        <!--Default-->
+        <item>@color/lightred1</item>
+        <!--Wrong-->
+        <item>@color/tabTextColor</item>
+        <!--Right-->
+        <item>@color/lightred1</item>
+        <!--Skipped-->
+        <item>@color/lightred1</item>
+        <!--Current-->
+        <item>@color/tabTextColor</item>
+        <!--Processed-->
+
+    </array>
+
+    <array name="text_state_colors">
+        <item>@android:color/white</item>
+        <!--Default-->
+        <item>@color/lightred1</item>
+        <!--Wrong-->
+        <item>@color/lightred1</item>
+        <!--Right-->
+        <item>@color/white</item>
+        <!--Skipped-->
+        <item>@color/white</item>
+        <!--Current-->
+        <item>@color/white</item>
+        <!--Processed-->
+    </array>
+</resources>
