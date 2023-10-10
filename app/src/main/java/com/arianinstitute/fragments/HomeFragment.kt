@@ -53,20 +53,20 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         examtest()
 
-        if(Paper.book().read("examgiven",false)==true){
-            binding.submitButton.visibility=View.GONE
+//        if(Paper.book().read("examgiven",false)==true){
+//            binding.submitButton.visibility=View.GONE
+//            binding.submitButton.setOnClickListener {
+//
+//                val intent= Intent(activity, StartTestActivity::class.java)
+//                startActivity(intent)
+//                requireActivity().finish()
+//            }
+//        }else{
             binding.submitButton.setOnClickListener {
-
                 val intent= Intent(activity, StartTestActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
-            }
-        }else{
-            binding.submitButton.setOnClickListener {
-                val intent= Intent(activity, StartTestActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
+//            }
         }
 
 

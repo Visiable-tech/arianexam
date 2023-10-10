@@ -17,6 +17,8 @@ import com.arianinstitute.fragments.ProfileFragment
 import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
 
+
+//ACTIVITY NOT IN USE
 @AndroidEntryPoint
 class DashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding

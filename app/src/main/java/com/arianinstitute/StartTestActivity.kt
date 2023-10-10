@@ -430,7 +430,7 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
                     response: Response<Void>
                 ) {
                     if (response.isSuccessful){
-                        val intent=Intent(this@StartTestActivity, CongratsActivity::class.java)
+                        val intent=Intent(this@StartTestActivity, ExamFinishedActivity::class.java)
                         startActivity(intent)
                         finish()
                     }else{

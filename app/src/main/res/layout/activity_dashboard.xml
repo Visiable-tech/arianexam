@@ -6,6 +6,7 @@
     <data>
 
     </data>
+<!--    //ACTIVITY NOT IN USE-->
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
