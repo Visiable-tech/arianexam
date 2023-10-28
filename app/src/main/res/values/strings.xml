@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OTSE</string>
+    <string name="app_name">Online Talent Search Exam</string>
     <string name="login">Sign in</string>
     <string name="register">Sign up</string>
     <string name="enterusername">Enter username</string>

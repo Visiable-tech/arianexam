@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.nctapplication.commons.MyApp"
+        android:name="com.avision.commons.OnlineTalentSearchExam"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,52 +17,52 @@
         android:theme="@style/Theme.ArianInstitute"
         tools:targetApi="31">
         <activity
-            android:name=".ExamFinishedActivity"
+            android:name="com.onlinetalentsearchexam.ExamFinishedActivity"
             android:exported="false" />
         <activity
-            android:name=".CongratsActivity"
+            android:name="com.onlinetalentsearchexam.CongratsActivity"
             android:exported="false" />
         <activity
-            android:name=".SummaryActivity"
+            android:name="com.onlinetalentsearchexam.SummaryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".AddEditNoteActivity"
+            android:name="com.onlinetalentsearchexam.AddEditNoteActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ResultActivity"
+            android:name="com.onlinetalentsearchexam.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".StartTestActivity"
+            android:name="com.onlinetalentsearchexam.StartTestActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".InstructionActivity"
+            android:name="com.onlinetalentsearchexam.InstructionActivity"
             android:exported="false" />
         <activity
-            android:name=".DashboardActivity"
+            android:name="com.onlinetalentsearchexam.DashboardActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.onlinetalentsearchexam.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".OptionActivity"
+            android:name="com.onlinetalentsearchexam.OptionActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.onlinetalentsearchexam.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.onlinetalentsearchexam.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

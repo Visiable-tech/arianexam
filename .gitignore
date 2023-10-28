@@ -1,0 +1,11 @@
+
+/gradle/
+/.gradle/
+/.idea/
+/app/src/androidTest/
+/app/src/test/
+/app/libs/
+/gradlew
+/gradlew.bat
+/build/
+/app/build/

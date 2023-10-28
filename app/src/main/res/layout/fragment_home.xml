@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.arianinstitute.model.examtest.Message" />
+            type="com.onlinetalentsearchexam.model.examtest.Message" />
     </data>
 
     <RelativeLayout
@@ -141,7 +141,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     />
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/submitButton"
+                    android:id="@+id/startExamBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
