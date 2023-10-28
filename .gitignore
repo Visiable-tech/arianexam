@@ -4,6 +4,7 @@
 /.idea/
 /app/src/androidTest/
 /app/src/test/
+/app/release/
 /app/libs/
 /gradlew
 /gradlew.bat
