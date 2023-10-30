@@ -5,6 +5,13 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+//release details
+//    otse.jks
+//    storePassword 'password'
+//    keyAlias = 'otse'
+//    keyPassword 'password'
+
+
 android {
     namespace 'com.arianinstitute'
     compileSdk 33
