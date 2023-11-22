@@ -169,40 +169,43 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp" />-->
     <LinearLayout
+        android:id="@+id/bottomButtonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
+
         <androidx.appcompat.widget.AppCompatImageView
 
-            android:layout_width="0dp"
-            android:layout_weight=".2"
-            android:layout_height="@dimen/_25sdp"
-            android:background="@drawable/arrow_left"
-            android:layout_margin="@dimen/_10sdp"
             android:id="@+id/arrow_left"
-            />
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_weight=".2"
+            android:background="@drawable/arrow_left" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/submitans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_width="0dp"
             android:layout_weight="1.5"
-            android:layout_height="wrap_content"
             android:background="@drawable/rounded_button_red"
             android:text="Save &amp; next"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/right_arrow"
             android:layout_width="0dp"
-            android:layout_weight=".2"
             android:layout_height="@dimen/_25sdp"
             android:layout_margin="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_weight=".2"
             android:background="@drawable/right_arrow" />
     </LinearLayout>
 

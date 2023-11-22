@@ -52,18 +52,6 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         examtest()
-
-//        if(Paper.book().read("examgiven",false)==true){
-//            binding.submitButton.visibility=View.GONE
-//            binding.submitButton.setOnClickListener {
-//
-//                val intent= Intent(activity, StartTestActivity::class.java)
-//                startActivity(intent)
-//                requireActivity().finish()
-//            }
-//        }else{
-
-
     }
     fun initExamBtn(){
         binding.startExamBtn.text=Global.statusText
@@ -121,7 +109,9 @@ class HomeFragment : Fragment() {
                                     } else {
                                         Glide.with(requireActivity()).load(R.drawable.logo).into(binding.image)
                                     }
-                                    Log.d("TAGGG",message.get(i).examTakenId.toString())
+                                    Log.d("TAGGG","exam taken id "+message.get(i).examTakenId.toString())
+                                    Log.d("TAGGG","exam id "+message.get(i).examId.toString())
+
                                     Global.examid=message.get(i).examId.toString()
                                     Global.time=message.get(i).totTime.toString().toLong()
                                     Global.exam_taken_id1=message.get(i).examTakenId.toString()
@@ -157,7 +147,7 @@ class HomeFragment : Fragment() {
                                     binding.totmarks.setText(Html.fromHtml(marks))
 
                                     val instruction =
-                                        "<font color=#000000>${resources.getString(R.string.instruction)}</font> <font color=#EA6B6A>${message.get(i).instruction}</font>"
+                                        "<font color=#EA6B6A>${message.get(i).instruction}</font>"
                                     binding.instruction.setText(Html.fromHtml(instruction))
 
                                 }

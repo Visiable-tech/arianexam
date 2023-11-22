@@ -11,7 +11,10 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -67,7 +70,7 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
     private var questionAnswerLayoutManager: LinearLayoutManager? = null
     lateinit var pageIndicatorAdapter: PageIndicatorAdapter
     private var pageIndicatorLayoutManager: LinearLayoutManager? = null
-
+    var finalSubmissionProgressBar:ProgressBar?=null
     var questionlist: ArrayList<HashMap<String, String>>? = ArrayList()
     var answerlist: ArrayList<HashMap<String, String>>? = ArrayList()
     lateinit var ansdao: AnswerDAO
@@ -142,7 +145,7 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
             .addFormDataPart("student_id", Paper.book().read("userid","").toString())
             .addFormDataPart("exam_id", Global.examid)
             .build()
-
+        Log.d("TAGGG","student_id: "+Paper.book().read("userid","").toString() + " exam_id:"+Global.examid)
         if(OnlineTalentSearchExam.getInstance()!!.isNetworkAvailable()){
             val viewModel: StartTestViewModel = ViewModelProvider(this).get(StartTestViewModel::class.java)
             viewModel.start_test(requestBody)?.observe(this@StartTestActivity,object :
@@ -249,70 +252,8 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
         questionid: String,
         answerid: String
     ) {
-        //Log.e("sushovon", examid+'\n'+questionid+'\n'+answerid)
-//        lifecycleScope.launch {
-//            isreload=true
-//            submitanswer(pos,questionid,answerid,examid)
-//        }
         nextButtonListener()
 
-    }
-    fun submitanswer(pos:Int,question_id: String, answer_id :String, exam_taken_id: String){
-        val requestBody: RequestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("question_id", question_id)
-            .addFormDataPart("answer_id", answer_id)
-            .addFormDataPart("exam_taken_id", exam_taken_id)
-            .build()
-
-        if(OnlineTalentSearchExam.getInstance()!!.isNetworkAvailable()){
-            val viewModel: SavequsViewModel = ViewModelProvider(this).get(SavequsViewModel::class.java)
-            viewModel.save_question(requestBody)?.observe(this@StartTestActivity,object :
-                Observer<SaveQusResponse?> {
-                @SuppressLint("SuspiciousIndentation")
-                override fun onChanged(apiResponse: SaveQusResponse?) {
-                    if(isreload){
-                        if (apiResponse == null) {
-                            // handle error here
-                            binding.spinKit.visibility = View.GONE
-                            return
-                        }
-                        if (apiResponse.error == null) {
-                            // call is successful
-                            binding.spinKit.setVisibility(View.GONE);
-                            if (apiResponse.posts == null) {
-                                binding.spinKit.visibility = View.GONE
-                                Utils.showToast(
-                                    resources.getString(R.string.data_not_found),
-                                    this@StartTestActivity
-                                )
-                            } else {
-
-                                if (apiResponse.getPosts().status.equals("200")) {
-                                    isreload=false
-                                   // Utils.showToast("Answer submitted",this@StartTestActivity)
-                                    if(pos== answerlist!!.size){
-                                        finalCheckDialog()
-                                    }
-                                    //Log.e("sushovon", apiResponse.getPosts().message.toString())
-                                } else if (!apiResponse.getPosts().status.equals("200")) {
-                                    isreload=false
-                                    //Utils.showToast(apiResponse.getPosts().message,this@InstructionActivity)
-                                }
-                            }
-                        } else {
-                            // call failed.
-                            binding.spinKit.visibility = View.GONE
-                            val e = apiResponse.error
-                        }
-                    }
-
-                }
-
-            })
-        }else{
-            Utils.showToast(resources.getString(R.string.no_internet),this@StartTestActivity)
-        }
     }
 
     private fun finalCheckDialog() {
@@ -322,6 +263,8 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
         lateinit var timerX: TextView
         lateinit var notesRV: RecyclerView
         submitFinal=dialog.findViewById(R.id.submitFinal)
+        dialog.findViewById<ImageView>(R.id.backBtn).setOnClickListener { dialog.dismiss() }
+        finalSubmissionProgressBar=dialog.findViewById(R.id.loadingProgress)
         timerX=dialog.findViewById(R.id.timerX)
         notesRV = dialog.findViewById(R.id.notesRV)
         val countDownTimer = object : CountDownTimer((60*Global.time*1000), 1000) {
@@ -382,6 +325,7 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
     }
 
     private fun finishExam() {
+        finalSubmissionProgressBar?.visibility=View.VISIBLE
         Paper.book().write("examgiven",true)
         viewModal.allNotes.observe(this@StartTestActivity, Observer { list ->
             val retro = Retrofit.Builder()
@@ -412,7 +356,6 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
 
             val dataToSend = SendDataModel(detail,qusdata)
             val gs = Gson()
-            Log.d("TAGG",gs.toJson(dataToSend).toString())
             val call = retroInstance.submitTest(dataToSend)
 
             call.enqueue(object : Callback<Void>{
@@ -433,7 +376,9 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
                     call: Call<Void>,
                     t: Throwable
                 ) {
-                    TODO("Not yet implemented")
+                    finalSubmissionProgressBar?.visibility=View.GONE
+                    Log.d(localClassName,t.localizedMessage)
+                    Toast.makeText(this@StartTestActivity,t.localizedMessage,Toast.LENGTH_LONG).show()
                 }
             })
 

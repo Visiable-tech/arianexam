@@ -8,6 +8,7 @@ import android.os.Looper
 import androidx.databinding.DataBindingUtil
 import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityMainBinding
+import com.onlinetalentsearchexam.maharaj.InstructionActivity
 import io.paperdb.Paper
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding=DataBindingUtil.setContentView(this, R.layout.activity_main)
         Handler(Looper.getMainLooper()).postDelayed({
             if(Paper.book().read("login",0)==1){
-                val intent = Intent(this, DashboardActivity::class.java)
+                val intent = Intent(this, InstructionActivity::class.java)
                 startActivity(intent)
                 finish()
             }else{

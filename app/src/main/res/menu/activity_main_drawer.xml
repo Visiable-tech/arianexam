@@ -11,6 +11,9 @@
         <item
             android:id="@+id/logout"
             android:title="LOGOUT" />
+        <item
+            android:id="@+id/policy"
+            android:title="PRIVACY POLICY" />
     </group>
 
    <!-- <item android:title="Communicate">

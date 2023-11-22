@@ -17,6 +17,15 @@
         android:theme="@style/Theme.ArianInstitute"
         tools:targetApi="31">
         <activity
+            android:name="com.onlinetalentsearchexam.maharaj.InstructionActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.onlinetalentsearchexam.maharaj.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.onlinetalentsearchexam.maharaj.CorrectAnsActivity"
+            android:exported="false" />
+        <activity
             android:name="com.onlinetalentsearchexam.ExamFinishedActivity"
             android:exported="false" />
         <activity

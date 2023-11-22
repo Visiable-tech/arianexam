@@ -24,6 +24,7 @@ import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.google.android.material.button.MaterialButton
 import com.avision.commons.OnlineTalentSearchExam
+import com.onlinetalentsearchexam.maharaj.InstructionActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
 import okhttp3.MultipartBody
@@ -94,16 +95,16 @@ class LoginActivity : AppCompatActivity() {
 
                                 if (info != null) {
 
-                                    if(info?.childType.toString().equals("m")){
+//                                    if(info?.childType.toString().equals("m")){
                                         var studentCode : ArrayList<StudentCode> = info.studentCode
                                         showDialog(studentCode)
-                                    }
-                                    else{
-                                        Paper.book().write("userid",info.id.toString())
-                                        val intent=Intent(this@LoginActivity,InstructionActivity::class.java)
-                                        startActivity(intent)
-                                        finish()
-                                    }
+//                                    }
+//                                    else{
+//                                        Paper.book().write("userid",info.id.toString())
+//                                        val intent=Intent(this@LoginActivity,InstructionActivity::class.java)
+//                                        startActivity(intent)
+//                                        finish()
+//                                    }
                                 }
 
 
@@ -146,7 +147,6 @@ class LoginActivity : AppCompatActivity() {
                 id: Long
             ) {
                 code=pos
-
             }
         })
 
@@ -154,7 +154,7 @@ class LoginActivity : AppCompatActivity() {
             dialog.dismiss()
             Paper.book().write("userid",arr.get(code).StudentId.toString())
             Paper.book().write("login",1)
-            val intent= Intent(this@LoginActivity,DashboardActivity::class.java)
+            val intent= Intent(this@LoginActivity,InstructionActivity::class.java)
             startActivity(intent)
             finish()
         }

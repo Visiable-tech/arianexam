@@ -104,18 +104,18 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="@dimen/_10sdp"
                     >
+
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="41dp"
                         android:layout_gravity="center_horizontal"
-                        android:textSize="@dimen/_15ssp"
-                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1"
                         android:gravity="left"
                         android:textColor="@color/red"
-                        android:layout_weight="1"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        />
+                        android:textSize="@dimen/_15ssp"
+                        android:textStyle="bold" />
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,13 +130,24 @@
                         />
                 </LinearLayout>
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:text="Instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/instructionHeading"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/instruction"
                     android:layout_gravity="center_horizontal"
                     android:textSize="@dimen/_15ssp"
                     android:textStyle="bold"
-                    android:gravity="center"
                     android:textColor="@color/red"
                     android:layout_marginTop="@dimen/_5sdp"
                     />
