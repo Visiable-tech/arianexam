@@ -25,6 +25,7 @@ class CorrectAnsActivity : AppCompatActivity() {
         mBinding= ActivityCorrectAnsBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
+        mBinding.backBtn.setOnClickListener{onBackPressed()}
         val map: MutableMap<String, RequestBody> = mutableMapOf()
         map.apply {
             put("test_id", createPartFromString(Global.examid))

@@ -26,6 +26,7 @@ class InstructionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityInstructionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        window.statusBarColor=getColor(R.color.white)
 
         introViewModel.apply {
             observe(introResponse,:: onReceiveIntroData)

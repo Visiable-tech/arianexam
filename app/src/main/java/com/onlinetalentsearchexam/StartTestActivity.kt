@@ -89,6 +89,7 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
         super.onCreate(savedInstanceState)
 
         binding=DataBindingUtil.setContentView(this,R.layout.activity_start_test)
+        window.statusBarColor=getColor(R.color.themecolor)
         ansdao= OnlineTalentSearchExam.getDB().getanswerdetails()!!
         _notesDao= NoteDatabase.getDatabase(this).getNotesDao()
         timer=binding.toolbar.timer
@@ -179,7 +180,7 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
                                     resultp.put("question",message.get(i).question.toString())
                                     resultp.put("question_id",message.get(i).questionId.toString())
                                     resultp.put("exam_taken_id",message.get(i).examTakenId.toString())
-                                    Global.exan_taken_id2=message.get(i).examTakenId.toString()
+                                    Global.exam_taken_id1=message.get(i).examTakenId.toString()
                                     questionlist?.add(resultp)
 
                                     var ansArr       : ArrayList<AnsArr> =message.get(i).ansArr
@@ -338,13 +339,8 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
                 .build()
             val retroInstance= retro.create(ApiInterface::class.java)
             val studentId = Paper.book().read("userid","")
-            var examTakenId=""
-            if(Global.exam_taken_id1!="0")
-                examTakenId=Global.exam_taken_id1
-            else{
-                examTakenId=Global.exan_taken_id2
-            }
-            val detail= listOf(DetailsItem(studentId!!.toInt(),examTakenId))
+
+            val detail= listOf(DetailsItem(studentId!!.toInt(),Global.exam_taken_id1))
             var qusID="";
             var selectedAnsId="";
             val qusdata= arrayListOf<QusdataItem>()

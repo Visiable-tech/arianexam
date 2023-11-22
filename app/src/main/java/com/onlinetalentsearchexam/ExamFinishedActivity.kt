@@ -3,6 +3,7 @@ package com.onlinetalentsearchexam
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityExamFinishedBinding
 import com.onlinetalentsearchexam.maharaj.CorrectAnsActivity
 import com.onlinetalentsearchexam.maharaj.ResultActivity
@@ -13,6 +14,8 @@ class ExamFinishedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding= ActivityExamFinishedBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+        window.statusBarColor=getColor(R.color.white)
+
         mBinding.apply {
             correctAns.setOnClickListener{
                 startActivity(Intent(this@ExamFinishedActivity,CorrectAnsActivity::class.java))

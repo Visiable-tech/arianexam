@@ -32,17 +32,12 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding= ActivityResultBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+        window.statusBarColor=getColor(R.color.white)
 
         val studentId = Paper.book().read("userid","")
-        var examTakenId=""
-        if(Global.exam_taken_id1!="0")
-            examTakenId= Global.exam_taken_id1
-        else{
-            examTakenId= Global.exan_taken_id2
-        }
         val map: MutableMap<String, RequestBody> = mutableMapOf()
         map.apply {
-            put("exam_taken_id", createPartFromString(examTakenId!!))
+            put("exam_taken_id", createPartFromString(Global.exam_taken_id1!!))
             put("student_id", createPartFromString(studentId!!))
         }
         viewModel.apply { 
