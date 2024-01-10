@@ -94,10 +94,14 @@ class LoginActivity : AppCompatActivity() {
                                 var info    : Info?=apiResponse.getPosts().info
 
                                 if (info != null) {
-
-//                                    if(info?.childType.toString().equals("m")){
-                                        var studentCode : ArrayList<StudentCode> = info.studentCode
-                                        showDialog(studentCode)
+                                        if(info.childType=="m") {
+                                            var studentCode: ArrayList<StudentCode> =
+                                                info.studentCode
+                                            showDialog(studentCode)
+                                        }
+                                        else {
+                                            saveAndGotoNextPage(info.id.toString())
+                                        }
 //                                    }
 //                                    else{
 //                                        Paper.book().write("userid",info.id.toString())
@@ -136,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
         var code: Int=0
 
         for(i in 0 until arr.size){
-            firstarray.add(arr.get(i).FirstName.toString())
+            firstarray.add(arr.get(i).FirstName.toString()+" "+arr.get(i).LastName.toString())
         }
 
         var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, firstarray)
@@ -152,14 +156,17 @@ class LoginActivity : AppCompatActivity() {
 
         submitButton.setOnClickListener {
             dialog.dismiss()
-            Paper.book().write("userid",arr.get(code).StudentId.toString())
-            Paper.book().write("login",1)
-            val intent= Intent(this@LoginActivity,InstructionActivity::class.java)
-            startActivity(intent)
-            finish()
+            saveAndGotoNextPage(arr.get(code).StudentId.toString())
         }
 
         dialog.show()
 
+    }
+    private fun saveAndGotoNextPage( id:String){
+        Paper.book().write("userid",id)
+        Paper.book().write("login",1)
+        val intent= Intent(this@LoginActivity,InstructionActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide
 import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.avision.commons.OnlineTalentSearchExam
+import com.onlinetalentsearchexam.maharaj.ResultActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
 import okhttp3.MultipartBody
@@ -61,7 +62,7 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
                 requireActivity().finish()
             }else if(Global.status=="3"){
-                Toast.makeText(context,"coming soon!",Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), ResultActivity::class.java))
             }else{
                 Toast.makeText(context,"Not allowed!",Toast.LENGTH_SHORT).show()
             }

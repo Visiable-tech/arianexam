@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +25,7 @@ class NoteRVAdapter(
     //on below line we are creating a view holder class.
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //on below line we are creating an initializing all our variables which we have added in layout file.
-        val noteTV = itemView.findViewById<TextView>(R.id.idTVNote)
+        val noteTV = itemView.findViewById<WebView>(R.id.idTVNote)
         val dateTV = itemView.findViewById<TextView>(R.id.idTVDate)
 //        val viewAll = itemView.findViewById<ImageView>(R.id.viewAll)
 //        val closeAll = itemView.findViewById<ImageView>(R.id.closeAll)
@@ -55,7 +57,21 @@ class NoteRVAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //on below line we are setting data to item of recycler view.
-        holder.noteTV.setText(allNotes.get(position).noteTitle)
+        holder.noteTV.apply {
+            settings.javaScriptEnabled=true
+            webViewClient= object : WebViewClient(){
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    view?.loadUrl("javascript:(function() {" +
+                            "var imgs = document.getElementsByTagName('img');" +
+                            "for (var i = 0; i < imgs.length; i++) {" +
+                            "  imgs[i].style.maxWidth = '100%';" +
+                            "  imgs[i].style.height = 'auto';" +
+                            "}" +
+                            "})()")
+                }
+            }
+            loadData(allNotes.get(position).noteTitle,"text/html","utf-8")
+        }
         holder.qusNum.setText(context!!.resources.getString(R.string.questionno)+(position+1))
         if (allNotes.get(position).SelAnsID=="0"){
             holder.dateTV.setText("Answer not selected!")

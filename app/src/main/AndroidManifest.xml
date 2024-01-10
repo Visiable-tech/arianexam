@@ -46,15 +46,9 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.onlinetalentsearchexam.ResultActivity"
-            android:exported="false" />
-        <activity
             android:name="com.onlinetalentsearchexam.StartTestActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.onlinetalentsearchexam.InstructionActivity"
-            android:exported="false" />
         <activity
             android:name="com.onlinetalentsearchexam.DashboardActivity"
             android:exported="false"

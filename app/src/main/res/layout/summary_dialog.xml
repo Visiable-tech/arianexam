@@ -69,6 +69,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/rounded_button_red"
-        android:text="Save &amp; Finish"
+        android:text="Save &amp; Submit"
         android:textColor="@color/white"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

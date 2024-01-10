@@ -6,12 +6,14 @@
     <data>
 
     </data>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.core.widget.NestedScrollView
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:layout_constraintBottom_toTopOf="@id/bottomButtonsLayout"
+        android:layout_height="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,10 +35,10 @@
                 android:background="@color/tabTextColor"
                 android:textColor="@color/black" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <WebView
                 android:id="@+id/question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textSize="@dimen/_13sdp"
                 android:gravity="left"
                 android:text=""
@@ -169,6 +171,9 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp" />-->
     <LinearLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/bottomButtonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -195,6 +200,17 @@
             android:background="@drawable/rounded_button_red"
             android:text="Save &amp; next"
             android:textColor="@color/white" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1.5"
+            android:background="@drawable/rounded_button_red"
+            android:text="@string/submitans"
+            android:visibility="gone"
+            android:id="@+id/submit"
+            android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/right_arrow"
@@ -209,22 +225,5 @@
             android:background="@drawable/right_arrow" />
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/rounded_button_red"
-        android:text="@string/submitans"
-        android:textColor="@color/white"
-        android:paddingLeft="@dimen/_50sdp"
-        android:paddingRight="@dimen/_50sdp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:id="@+id/submit"
-        android:visibility="gone"
-        />
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

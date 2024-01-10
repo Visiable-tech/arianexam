@@ -1,9 +1,7 @@
 package com.onlinetalentsearchexam.maharaj
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.CalendarContract.Colors
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.arianinstitute.R
@@ -11,7 +9,6 @@ import com.arianinstitute.databinding.ActivityResultBinding
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.onlinetalentsearchexam.Global
 import com.onlinetalentsearchexam.maharaj.data.models.Result
 import com.onlinetalentsearchexam.maharaj.data.models.ResultResponse
@@ -72,22 +69,24 @@ class ResultActivity : AppCompatActivity() {
             }
         }
     }
-    private fun initPieChart(data:Result){
+    private fun initPieChart(result:Result){
         mBinding.apply {
             val pieEntryList= arrayListOf<PieEntry>()
             pieEntryList.apply {
-                add(PieEntry(data.correct!!.toFloat(),"Correct"))
-                add(PieEntry(data.incorrect!!.toFloat(),"Incorrect"))
+                add(PieEntry(result.correct!!.toFloat(),"Correct"))
+                add(PieEntry(result.incorrect!!.toFloat(),"Incorrect"))
             }
             val pieDataSet=PieDataSet(pieEntryList,"Answers")
             pieDataSet.apply {
-//                setColors(ColorTemplate.MATERIAL_COLORS,this@ResultActivity)
+//                colors=ColorTemplate.MATERIAL_COLORS.asList()
                 colors = listOf(resources.getColor(R.color.green),resources.getColor(R.color.red))
             }
-            pie.data= PieData(pieDataSet)
-            pie.description.isEnabled=false
-            pie.animateY(1500)
-            pie.invalidate()
+            pieChart.apply {
+                data= PieData(pieDataSet)
+                description.isEnabled=false
+                animateY(1500)
+                invalidate()
+            }
         }
     }
 }

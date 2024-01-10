@@ -1,6 +1,7 @@
 package com.onlinetalentsearchexam.maharaj
 
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ class AnswersAdapter(val context: Context, var data: QnA) : RecyclerView.Adapter
     inner class ViewHolder(val binding: CustomviewAnsBinding) : RecyclerView.ViewHolder(binding.root){
         fun bindItem(position: Int){
             data.ans_arr!![position].apply {
-                binding.ans.text=answer
+                binding.ans.text= Html.fromHtml(answer)
                 binding.number.text=(position+1).toString()
                 if(ans_status==1)
                     binding.layoutRoot.setBackgroundColor(context.getColor(R.color.green))

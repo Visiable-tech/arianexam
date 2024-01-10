@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityMainBinding
@@ -16,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor=getColor(R.color.white)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         binding=DataBindingUtil.setContentView(this, R.layout.activity_main)
         Handler(Looper.getMainLooper()).postDelayed({
             if(Paper.book().read("login",0)==1){

@@ -20,9 +20,9 @@ class ExamFinishedActivity : AppCompatActivity() {
             correctAns.setOnClickListener{
                 startActivity(Intent(this@ExamFinishedActivity,CorrectAnsActivity::class.java))
             }
-            viewResult.setOnClickListener {
-                startActivity(Intent(this@ExamFinishedActivity, ResultActivity::class.java))
-            }
+//            viewResult.setOnClickListener {
+//                startActivity(Intent(this@ExamFinishedActivity, ResultActivity::class.java))
+//            }
             goBackBtn.setOnClickListener {
                 startActivity(Intent(this@ExamFinishedActivity, DashboardActivity::class.java))
                 finish()

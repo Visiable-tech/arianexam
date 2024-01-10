@@ -19,12 +19,13 @@
             android:text="1"
             android:textColor="@color/white"
             android:id="@+id/qNumber"/>
-        <TextView
+        <WebView
+            android:backgroundTint="@color/red"
             android:textColor="@color/white"
             android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="What is your name?"
+            android:text="this is the question?"
             android:id="@+id/question"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView

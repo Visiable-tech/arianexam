@@ -26,7 +26,8 @@
             android:layout_marginBottom="3dp"
             android:text="0."
             android:textStyle="bold"/>
-        <TextView
+        <WebView
+            android:backgroundTint="@color/black_shade_2"
             android:layout_toRightOf="@+id/qusNum"
             android:id="@+id/idTVNote"
             android:layout_width="match_parent"

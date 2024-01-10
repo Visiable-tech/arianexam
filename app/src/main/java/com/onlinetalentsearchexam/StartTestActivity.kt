@@ -208,12 +208,12 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
                                     }
 
                                     val addAllNote = Note(
-                                        Html.fromHtml(resultp["question"]).toString(),
+                                        resultp["question"].toString(),
                                         Html.fromHtml(answertp["answer0"]).toString(),
                                         Html.fromHtml(answertp["answer1"]).toString(),
                                         Html.fromHtml(answertp["answer2"]).toString(),
                                         Html.fromHtml(answertp["answer3"]).toString(),
-                                        Html.fromHtml(resultp["question_id"]).toString(),"Not selected", "0", "1")
+                                        resultp["question_id"].toString(),"Not selected", "0", "1")
                                     allNotes.add(addAllNote)
                                     viewModal.addNote(addAllNote)
 
@@ -310,7 +310,7 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
 
     private fun finalCheckWarning() {
         val builder1 = AlertDialog.Builder(this@StartTestActivity)
-        builder1.setMessage("Do you want to quit exam?")
+        builder1.setMessage("Do you want to submit exam?")
         builder1.setCancelable(true)
         builder1.setPositiveButton(
             "Yes"

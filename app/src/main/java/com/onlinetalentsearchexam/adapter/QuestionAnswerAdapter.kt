@@ -2,9 +2,12 @@ package com.onlinetalentsearchexam.adapter
 
 import android.content.Context
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
@@ -57,7 +60,7 @@ class QuestionAnswerAdapter :
         customListner2 = listener
     }
     class MyViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
-        var question: TextView
+        var question: WebView
         var numbering : TextView
         var radio1: RadioButton
         var radio2: RadioButton
@@ -196,9 +199,9 @@ class QuestionAnswerAdapter :
 
             holder.submitans.setOnClickListener {
                 if(!ansid.isNullOrEmpty()){
-                    val updatedNote = Note(Html.fromHtml(resultp["question"]).toString(),Html.fromHtml(answertp["answer0"]).toString(),
+                    val updatedNote = Note(resultp["question"].toString(),Html.fromHtml(answertp["answer0"]).toString(),
                         Html.fromHtml(answertp["answer1"]).toString(),Html.fromHtml(answertp["answer2"]).toString(),
-                        Html.fromHtml(answertp["answer3"]).toString(),qusID,ansText, ansid, "1")
+                        Html.fromHtml(answertp["answer3"]).toString(),qusID,Html.fromHtml(ansText).toString(), ansid, "1")
 
                     updatedNote.id = allNotesx.get(position).id
                     viewModal.updateNote(updatedNote)
@@ -225,7 +228,23 @@ class QuestionAnswerAdapter :
         }
 
         holder.numbering.setText(context!!.resources.getString(R.string.questionno)+(holder.absoluteAdapterPosition+1))
-        holder.question.text = allNotesx.get(position).noteTitle
+        Log.d("TAGGG","Question: "+allNotesx.get(position).noteTitle)
+        holder.question.apply {
+            settings.javaScriptEnabled=true
+            webViewClient= object : WebViewClient(){
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    view?.loadUrl("javascript:(function() {" +
+                            "var imgs = document.getElementsByTagName('img');" +
+                            "for (var i = 0; i < imgs.length; i++) {" +
+                            "  imgs[i].style.maxWidth = '100%';" +
+                            "  imgs[i].style.height = 'auto';" +
+                            "}" +
+                            "})()")
+                }
+            }
+            loadData(allNotesx.get(position).noteTitle,"text/html","utf-8")
+        }
+
         if(answerdata!!.size>0){
             for(i in 0 until answerdata!!.size){
                 if(i==0){

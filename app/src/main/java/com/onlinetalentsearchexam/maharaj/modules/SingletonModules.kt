@@ -1,7 +1,7 @@
 package com.onlinetalentsearchexam.maharaj.modules
 
 import android.content.Context
-import com.arianinstitute.BuildConfig
+import com.google.android.datatransport.BuildConfig
 import com.onlinetalentsearchexam.commons.Constants
 import com.onlinetalentsearchexam.maharaj.apiservice.ApiService
 import com.onlinetalentsearchexam.maharaj.data.Preferences
