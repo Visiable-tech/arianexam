@@ -7,12 +7,12 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.arianinstitute.databinding.CustomviewQuestionBinding
-import com.onlinetalentsearchexam.maharaj.data.models.QnA
+import com.arianinstitute.databinding.CustomviewQuestionQuizBinding
+import com.onlinetalentsearchexam.maharaj.data.models.Question
 
-class CorrectAnswerQuestionAdapter(val contxt: Context, var data: List<QnA>) : RecyclerView.Adapter<CorrectAnswerQuestionAdapter.ViewHolder>() {
+class QuizQuestionAdapter(val contxt: Context, var listener:QuestionAnswerButtonsListener, var data: List<Question> = listOf()) : RecyclerView.Adapter<QuizQuestionAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: CustomviewQuestionBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(val binding: CustomviewQuestionQuizBinding) : RecyclerView.ViewHolder(binding.root){
         fun bindItem(position: Int){
             data[position].apply {
                 binding.question.apply {
@@ -30,17 +30,17 @@ class CorrectAnswerQuestionAdapter(val contxt: Context, var data: List<QnA>) : R
                     }
                     loadData(question!!,"text/html","utf-8")
                 }
-                binding.qNumber.text=(position+1).toString()
+                binding.numbering.text=(position+1).toString()
                 binding.ansRecyclerView.apply {
                     layoutManager=LinearLayoutManager(contxt)
-                    adapter=CorrectAnsAnswersAdapter(contxt,data[position])
+                    adapter=QuizAnswerAdapter(contxt,position,data[position],listener)
                 }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(CustomviewQuestionBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(CustomviewQuestionQuizBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder,  position: Int) {
@@ -49,4 +49,12 @@ class CorrectAnswerQuestionAdapter(val contxt: Context, var data: List<QnA>) : R
     override fun getItemCount(): Int {
         return data.size
     }
+    fun updateData(data:List<Question>){
+        this.data=data
+        notifyDataSetChanged()
+    }
+}
+interface QuestionAnswerButtonsListener{
+    fun onAnswerClick(ansPos:Int,quesPos:Int,question:Question)
+
 }

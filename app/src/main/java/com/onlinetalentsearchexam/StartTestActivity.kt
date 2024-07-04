@@ -1,20 +1,18 @@
 package com.onlinetalentsearchexam
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Html
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -28,280 +26,158 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityStartTestBinding
 import com.onlinetalentsearchexam.adapter.PageIndicatorAdapter
-import com.onlinetalentsearchexam.adapter.QuestionAnswerAdapter
 import com.onlinetalentsearchexam.adapter.PageIndicatorListener
 import com.onlinetalentsearchexam.commons.Constants
-import com.onlinetalentsearchexam.database.AnswerDAO
-import com.onlinetalentsearchexam.model.DetailsItem
-import com.onlinetalentsearchexam.model.QusdataItem
-import com.onlinetalentsearchexam.model.SendDataModel
-import com.onlinetalentsearchexam.model.start_test.AnsArr
-import com.onlinetalentsearchexam.response.SaveQusResponse
-import com.onlinetalentsearchexam.response.StartTestResponse
+import com.onlinetalentsearchexam.maharaj.data.models.DetailsItem
+import com.onlinetalentsearchexam.maharaj.data.models.QusdataItem
+import com.onlinetalentsearchexam.maharaj.data.models.QuizAnsSubmitRequest
 import com.onlinetalentsearchexam.utils.SnapHelperOneByOne
-import com.onlinetalentsearchexam.utils.Utils
-import com.onlinetalentsearchexam.viewmodel.SavequsViewModel
-import com.onlinetalentsearchexam.viewmodel.StartTestViewModel
 import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.DoubleBounce
-import com.google.gson.Gson
 import com.avision.commons.ApiInterface
-import com.avision.commons.OnlineTalentSearchExam
+import com.google.gson.Gson
+import com.onlinetalentsearchexam.maharaj.FinalDialogQuestionAdapter
+import com.onlinetalentsearchexam.maharaj.QuizQuestionAdapter
+import com.onlinetalentsearchexam.maharaj.QuestionAnswerButtonsListener
+import com.onlinetalentsearchexam.maharaj.data.models.Question
+import com.onlinetalentsearchexam.maharaj.data.models.QuizAnsSubmitResponse
+import com.onlinetalentsearchexam.maharaj.data.models.QuizQuestionResponse
+import com.onlinetalentsearchexam.maharaj.retrofit.State
+import com.onlinetalentsearchexam.maharaj.viewmodels.ExamViewModel
+import com.visiabletech.avision.maharaj.core.extension.createPartFromString
+import com.visiabletech.avision.maharaj.core.extension.observe
+import com.visiabletech.avision.maharaj.core.util.Utility
 import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.*
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButtonListener ,QuestionAnswerAdapter.customButtonListener1,
-    QuestionAnswerAdapter.customButtonListener2, PageIndicatorListener,NoteClickInterface, NoteClickDeleteInterface{
+class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, PageIndicatorListener {
     private lateinit var binding: ActivityStartTestBinding
+    private val viewModel: ExamViewModel by viewModels()
+    lateinit var mainData:List<Question>
     var doubleBounce: Sprite = DoubleBounce()
-    lateinit var questionAnswerAdapter : QuestionAnswerAdapter
-    private var questionAnswerLayoutManager: LinearLayoutManager? = null
+    lateinit var quizQuestionAdapter : QuizQuestionAdapter
+    private var quizLayoutManger: LinearLayoutManager? = null
     lateinit var pageIndicatorAdapter: PageIndicatorAdapter
     private var pageIndicatorLayoutManager: LinearLayoutManager? = null
+    lateinit var finalDialogQuestionAdapter:FinalDialogQuestionAdapter
     var finalSubmissionProgressBar:ProgressBar?=null
-    var questionlist: ArrayList<HashMap<String, String>>? = ArrayList()
-    var answerlist: ArrayList<HashMap<String, String>>? = ArrayList()
-    lateinit var ansdao: AnswerDAO
-    lateinit var _notesDao: NotesDao
-    var isreload: Boolean=false
-    //lateinit var toolbar: Toolbar
-    lateinit var timer: TextView
-    var newTimer: Long = 0
+     var finalDialogTimer: TextView?=null
+
     lateinit var finish: Button
     lateinit var viewModal: NoteViewModal
-    private var
-            allNotes = ArrayList<Note>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding=DataBindingUtil.setContentView(this,R.layout.activity_start_test)
         window.statusBarColor=getColor(R.color.themecolor)
-        ansdao= OnlineTalentSearchExam.getDB().getanswerdetails()!!
-        _notesDao= NoteDatabase.getDatabase(this).getNotesDao()
-        timer=binding.toolbar.timer
-        finish=binding.toolbar.finish
-        finish.setOnClickListener {
-            finalCheckDialog()
+
+        val studentId = Paper.book().read("userid","")
+        val map: MutableMap<String, RequestBody> = mutableMapOf()
+        map.apply {
+            put("exam_id", createPartFromString(Global.examid))
+            put("student_id", createPartFromString(studentId!!))
+        }
+        Log.d("TAG ","exam_id:"+Global.examid+"  student_id:"+studentId)
+        viewModel.apply {
+            observe(questionAnswerResponse,::onQuestionAnswerReceive)
+            observe(quizAnsSubmitResponse,::onQuizAnsSubmitResponseReceive)
+
+            getQuestionAnswer(map)
+        }
+        binding.apply {
+            toolbar.finish.setOnClickListener {
+                finalCheckDialog()
+            }
+            arrowLeft.setOnClickListener { onPrev() }
+            rightArrow.setOnClickListener { onNext() }
+            submitans.setOnClickListener { onNext() }
+        }
+        val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
+        linearSnapHelper.attachToRecyclerView(binding.recyclerview)
+        quizLayoutManger= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        pageIndicatorLayoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
+        quizQuestionAdapter=QuizQuestionAdapter(this,this)
+        binding.recyclerview.apply {
+            layoutManager = quizLayoutManger
+            adapter=quizQuestionAdapter
+            isLayoutFrozen=true
         }
 
-
+        pageIndicatorAdapter= PageIndicatorAdapter(this,this)
+        binding.pageIndicatorRecyclerView.apply {
+            adapter=pageIndicatorAdapter
+            layoutManager=pageIndicatorLayoutManager
+        }
+        countDown()
         viewModal = ViewModelProvider(
             this@StartTestActivity,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(NoteViewModal::class.java)
         viewModal.clearData()
-        questionAnswerAdapter= QuestionAnswerAdapter(this@StartTestActivity,questionlist,answerlist,viewModal,allNotes)
-        questionAnswerLayoutManager = LinearLayoutManager(
-            this@StartTestActivity,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
-        linearSnapHelper.attachToRecyclerView(binding.recyclerview)
-        questionAnswerAdapter.setCustomButtonListner(this@StartTestActivity)
-        questionAnswerAdapter.setCustomButtonListner1(this@StartTestActivity)
-        questionAnswerAdapter.setCustomButtonListner2(this@StartTestActivity)
-        binding.recyclerview.layoutManager = questionAnswerLayoutManager
-        binding.recyclerview.adapter=questionAnswerAdapter
-        binding.recyclerview.isLayoutFrozen=true
-
-        pageIndicatorAdapter= PageIndicatorAdapter(this,this)
-        pageIndicatorLayoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        binding.pageIndicatorRecyclerView.apply {
-            adapter=pageIndicatorAdapter
-            layoutManager=pageIndicatorLayoutManager
-        }
-
-        countDown()
-        //getdb()
-        startexam()
     }
 
-    fun getdb(){
-        /*lifecycleScope.launch {
-            var ans=Answer(0,"16308","4600","18394",0)
-            ansdao.insert(ans)
-        }*/
+    override fun onBackPressed() {
+        Toast.makeText(this,"Not Allowed!",Toast.LENGTH_SHORT).show()
     }
-    fun startexam(){
-        binding.spinKit.visibility = View.VISIBLE
-        binding.spinKit.setIndeterminateDrawable(doubleBounce)
 
-        val requestBody: RequestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("student_id", Paper.book().read("userid","").toString())
-            .addFormDataPart("exam_id", Global.examid)
-            .build()
-        Log.d("TAGGG","student_id: "+Paper.book().read("userid","").toString() + " exam_id:"+Global.examid)
-        if(OnlineTalentSearchExam.getInstance()!!.isNetworkAvailable()){
-            val viewModel: StartTestViewModel = ViewModelProvider(this).get(StartTestViewModel::class.java)
-            viewModel.start_test(requestBody)?.observe(this@StartTestActivity,object :
-                Observer<StartTestResponse?> {
-                override fun onChanged(apiResponse: StartTestResponse?) {
-
-                    if (apiResponse == null) {
-                        // handle error here
-                        binding.spinKit.visibility = View.GONE
-                        return
-                    }
-                    if (apiResponse.error == null) {
-                        // call is successful
-                        binding.spinKit.setVisibility(View.GONE);
-                        if (apiResponse.posts == null) {
-                            binding.spinKit.visibility = View.GONE
-                            Utils.showToast(
-                                resources.getString(R.string.data_not_found),
-                                this@StartTestActivity
-                            )
-
-                        } else {
-
-                            if (apiResponse.getPosts().status.equals("200")) {
-                                var message : ArrayList<com.onlinetalentsearchexam.model.start_test.Message> = apiResponse.getPosts().message
-
-                                for (i in 0 until message.size){
-
-                                    var resultp = HashMap<String, String>()
-                                    var answertp = HashMap<String, String>()
-                                    resultp.put("question",message.get(i).question.toString())
-                                    resultp.put("question_id",message.get(i).questionId.toString())
-                                    resultp.put("exam_taken_id",message.get(i).examTakenId.toString())
-                                    Global.exam_taken_id1=message.get(i).examTakenId.toString()
-                                    questionlist?.add(resultp)
-
-                                    var ansArr       : ArrayList<AnsArr> =message.get(i).ansArr
-                                    if(ansArr.size>0){
-
-                                        for(i in 0 until ansArr.size){
-                                            if(i==0){
-                                                answertp.put("answer0",ansArr.get(i).answer.toString())
-                                                answertp.put("answer_id0",ansArr.get(i).answerId.toString())
-                                            }
-                                            else if(i==1){
-                                                answertp.put("answer1",ansArr.get(i).answer.toString())
-                                                answertp.put("answer_id1",ansArr.get(i).answerId.toString())
-                                            }
-                                            else if(i==2){
-                                                answertp.put("answer2",ansArr.get(i).answer.toString())
-                                                answertp.put("answer_id2",ansArr.get(i).answerId.toString())
-                                            }
-                                            else if(i==3){
-                                                answertp.put("answer3",ansArr.get(i).answer.toString())
-                                                answertp.put("answer_id3",ansArr.get(i).answerId.toString())
-                                            }
-                                        }
-                                        answerlist?.add(answertp)
-                                    }
-
-                                    val addAllNote = Note(
-                                        resultp["question"].toString(),
-                                        Html.fromHtml(answertp["answer0"]).toString(),
-                                        Html.fromHtml(answertp["answer1"]).toString(),
-                                        Html.fromHtml(answertp["answer2"]).toString(),
-                                        Html.fromHtml(answertp["answer3"]).toString(),
-                                        resultp["question_id"].toString(),"Not selected", "0", "1")
-                                    allNotes.add(addAllNote)
-                                    viewModal.addNote(addAllNote)
-
-                                }
-
-                                viewModal.allNotes.observe(this@StartTestActivity, Observer { list ->
-                                    list?.let {
-                                        //on below line we are updating our list.
-                                        questionAnswerAdapter.updateList(it)
-                                        pageIndicatorAdapter.updateData(it)
-                                    }
-                                })
-                               // adapter.notifyDataSetChanged()
-                                Global.totalques= answerlist?.size ?:0
-                            } else if (!apiResponse.getPosts().status.equals("200")) {
-                                //Utils.showToast(apiResponse.getPosts().message,this@InstructionActivity)
-                            }
-
-
-                        }
-                    } else {
-                        // call failed.
-                        binding.spinKit.visibility = View.GONE
-                        val e = apiResponse.error
-                    }
-                }
-
-            })
-        }else{
-            Utils.showToast(resources.getString(R.string.no_internet),this@StartTestActivity)
+    private fun onQuestionAnswerReceive(state: State<QuizQuestionResponse>?) {
+        when (state) {
+            is State.ErrorState -> {
+                Utility.performErrorState(this,state, "Failed")
+            }
+            is State.DataState -> {
+                initDataToView(state.data)
+            }
+            else -> {}
         }
     }
-
-    override fun onButtonClickListner(
-        pos: Int,
-        examid: String,
-        questionid: String,
-        answerid: String
-    ) {
-        nextButtonListener()
-
+    private fun onQuizAnsSubmitResponseReceive(state: State<QuizAnsSubmitResponse>?){
+        when (state) {
+            is State.ErrorState -> {
+                Utility.performErrorState(this,state, "Failed")
+                finalSubmissionProgressBar?.visibility=View.INVISIBLE
+            }
+            is State.DataState -> {
+                val intent=Intent(this@StartTestActivity, ExamFinishedActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
+            }
+            else -> {}
+        }
+    }
+    fun initDataToView(data: QuizQuestionResponse){
+        mainData=data.message!!
+        pageIndicatorAdapter.updateData(mainData)
+        quizQuestionAdapter.updateData(mainData)
     }
 
     private fun finalCheckDialog() {
         val dialog = Dialog(this@StartTestActivity, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen)
-        dialog.setContentView(R.layout.summary_dialog)
+        dialog.setContentView(R.layout.final_dialog)
         val submitFinal:AppCompatButton
-        lateinit var timerX: TextView
-        lateinit var notesRV: RecyclerView
+        lateinit var questionRecyclerview: RecyclerView
         submitFinal=dialog.findViewById(R.id.submitFinal)
         dialog.findViewById<ImageView>(R.id.backBtn).setOnClickListener { dialog.dismiss() }
         finalSubmissionProgressBar=dialog.findViewById(R.id.loadingProgress)
-        timerX=dialog.findViewById(R.id.timerX)
-        notesRV = dialog.findViewById(R.id.notesRV)
-        val countDownTimer = object : CountDownTimer((60*Global.time*1000), 1000) {
-            override fun onTick(leftTimeInMilliseconds: Long) {
-                val seconds: Long = newTimer / 1000
+        finalDialogTimer=dialog.findViewById(R.id.timerX)
+        questionRecyclerview = dialog.findViewById(R.id.questionRecyclerview)
 
-                timerX.setText(
-                    "00" + ":" + String.format(
-                        "%02d",
-                        seconds / 60
-                    ) + ":" + String.format("%02d", seconds % 60)
-                )
-            }
-
-            override fun onFinish() {
-                lifecycleScope.launch {
-                    finishExam()
-                }
-            }
+        questionRecyclerview.apply {
+            layoutManager = LinearLayoutManager(this@StartTestActivity)
+            finalDialogQuestionAdapter = FinalDialogQuestionAdapter(this@StartTestActivity,mainData,this@StartTestActivity)
+            adapter = finalDialogQuestionAdapter
         }
-        countDownTimer.start()
-        notesRV.layoutManager = LinearLayoutManager(this@StartTestActivity)
-        //on below line we are initializing our adapter class.
-        val noteRVAdapter = NoteRVAdapter(this@StartTestActivity, viewModal, this@StartTestActivity)
-        //on below line we are setting adapter to our recycler view.
-        notesRV.adapter = noteRVAdapter
-        //on below line we are initializing our view modal.
-
-        //on below line we are calling all notes methof from our view modal class to observer the changes on list.
-        viewModal.allNotes.observe(this@StartTestActivity, Observer { list ->
-            list?.let {
-                //on below line we are updating our list.
-                noteRVAdapter.updateList(it)
-            }
-        })
-
         submitFinal.setOnClickListener {
             finalCheckWarning()
         }
@@ -344,16 +220,14 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
             var qusID="";
             var selectedAnsId="";
             val qusdata= arrayListOf<QusdataItem>()
-            for (li in list){
-                qusID=li.QusID
-                selectedAnsId=li.SelAnsID
+            for (li in mainData){
+                qusID=li.question_id!!
+                selectedAnsId=li.selectedAnsId
                 qusdata.add(QusdataItem(qusID,selectedAnsId))
             }
 
-            val dataToSend = SendDataModel(detail,qusdata)
-            val gs = Gson()
+            val dataToSend = QuizAnsSubmitRequest(detail,qusdata)
             val call = retroInstance.submitTest(dataToSend)
-
             call.enqueue(object : Callback<Void>{
                 override fun onResponse(
                     call: Call<Void>,
@@ -380,18 +254,31 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
 
         })
     }
+//    private fun finishExam() {
+//        finalSubmissionProgressBar?.visibility=View.VISIBLE
+//
+//            val studentId = Paper.book().read("userid","")
+//            val detail= listOf(DetailsItem(studentId!!.toInt(),Global.exam_taken_id1))
+//            val qusdata= arrayListOf<QusdataItem>()
+//            for (question in mainData){
+//                qusdata.add(QusdataItem(question.question_id!!,question.selectedAnsId))
+//            }
+//
+//            val quizAnsSubmitRequest = QuizAnsSubmitRequest(detail,qusdata)
+//
+//    viewModel.quizAnsSubmit(quizAnsSubmitRequest)
+//    }
 
     private fun countDown() {
         val countDownTimer = object : CountDownTimer((60*Global.time*1000), 1000) {
             override fun onTick(leftTimeInMilliseconds: Long) {
                 val seconds: Long = leftTimeInMilliseconds / 1000
-                timer.setText(
-                    "00" + ":" + String.format(
-                        "%02d",
-                        seconds / 60
-                    ) + ":" + String.format("%02d", seconds % 60)
-                )
-                newTimer=leftTimeInMilliseconds
+                val time= "00" + ":" + String.format(
+                    "%02d",
+                    seconds / 60
+                ) + ":" + String.format("%02d", seconds % 60)
+                binding.toolbar.timer.text=time
+                finalDialogTimer?.text = time
             }
 
             override fun onFinish() {
@@ -402,52 +289,41 @@ class StartTestActivity : AppCompatActivity(),QuestionAnswerAdapter.customButton
         }
         countDownTimer.start()
     }
-    override fun onNoteClick(note: Note) {
-        //opening a new intent and passing a data to it.
-        val intent = Intent(this@StartTestActivity, AddEditNoteActivity::class.java)
-        intent.putExtra("noteType", "Edit")
-        intent.putExtra("noteTitle", note.noteTitle)
-        intent.putExtra("SelAnsID", note.SelAnsID)
-        intent.putExtra("noteId", note.id)
-        startActivity(intent)
-        this.finish()
-    }
-    override fun nextButtonListener() {
-        val oldPosition = questionAnswerLayoutManager!!.findLastCompletelyVisibleItemPosition()
-        val newPosition = oldPosition + 1
-        if (oldPosition < questionAnswerAdapter.itemCount - 1){
-            questionAnswerLayoutManager!!.scrollToPosition(newPosition)
-            pageIndicatorAdapter.updatePosition(newPosition)
-        } else
-            finalCheckDialog()
 
-    }
-
-    override fun prevButtonListener() {
-        val oldPosition=questionAnswerLayoutManager!!.findLastCompletelyVisibleItemPosition()
-        val newPosition=oldPosition - 1
-        if (oldPosition> 0) {
-            questionAnswerLayoutManager!!.scrollToPosition(newPosition)
-            pageIndicatorAdapter.updatePosition(newPosition)
-        }
-    }
     override fun onPressIndicator(pos: Int) {
-        questionAnswerLayoutManager!!.scrollToPosition(pos)
+        quizLayoutManger!!.scrollToPosition(pos)
         pageIndicatorAdapter.updatePosition(pos)
     }
 
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // your code here
-            false
-        } else super.onKeyDown(keyCode, event)
+     fun onPrev() {
+        val oldPosition=quizLayoutManger!!.findLastCompletelyVisibleItemPosition()
+        val newPosition=oldPosition - 1
+        if (oldPosition> 0) {
+            quizLayoutManger!!.scrollToPosition(newPosition)
+            pageIndicatorAdapter.updatePosition(newPosition)
+        }    }
+
+     fun onNext() {
+        val oldPosition = quizLayoutManger!!.findLastCompletelyVisibleItemPosition()
+        val newPosition = oldPosition + 1
+        if (oldPosition < quizQuestionAdapter.itemCount - 1){
+            quizLayoutManger!!.scrollToPosition(newPosition)
+            pageIndicatorAdapter.updatePosition(newPosition)
+        } else
+            finalCheckDialog()
     }
 
+     override fun onAnswerClick(ansPos: Int, quesPos: Int, question:Question ) {
+        mainData[quesPos].selectedAnsId=question.ans_arr!![ansPos].answer_id!!
+         mainData[quesPos].selectedAns=question.ans_arr!![ansPos].answer!!
+         quizQuestionAdapter.notifyItemChanged(quesPos)
+        pageIndicatorAdapter.notifyItemChanged(quesPos)
+         if(::finalDialogQuestionAdapter.isInitialized)
+             finalDialogQuestionAdapter.notifyItemChanged(quesPos)
 
-    override fun onDeleteIconClick(note: Note) {
-        TODO("Not yet implemented")
-    }
+
+     }
 
 
 }

@@ -33,7 +33,7 @@ class QuestionAnswerAdapter :
     var customListner2: customButtonListener2? = null
     lateinit var viewModal: NoteViewModal
     var noteID = -1;
-    private var
+     var
             allNotesx = ArrayList<Note>()
 
 
@@ -67,7 +67,6 @@ class QuestionAnswerAdapter :
         var radio3: RadioButton
         var radio4: RadioButton
         //var next: TextView
-        var submit: AppCompatButton
         var rdgrp: RadioGroup
         var rd1: TextView
         var rd2: TextView
@@ -87,7 +86,6 @@ class QuestionAnswerAdapter :
             radio3 = itemView.findViewById(R.id.radio3)
             radio4 = itemView.findViewById(R.id.radio4)
             //next = itemView.findViewById(R.id.next)
-            submit = itemView.findViewById(R.id.submit)
             rdgrp = itemView.findViewById(R.id.rdgrp)
             rd1 = itemView.findViewById(R.id.rd1)
             rd2 = itemView.findViewById(R.id.rd2)
@@ -118,7 +116,7 @@ class QuestionAnswerAdapter :
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.question_listitem, parent, false)
+            .inflate(R.layout.customview_question_quiz, parent, false)
         return MyViewHolder(itemView)
 
     }
@@ -228,7 +226,7 @@ class QuestionAnswerAdapter :
         }
 
         holder.numbering.setText(context!!.resources.getString(R.string.questionno)+(holder.absoluteAdapterPosition+1))
-        Log.d("TAGGG","Question: "+allNotesx.get(position).noteTitle)
+        Log.d("GGGInsideAdaptr","Question: "+allNotesx.get(position).noteTitle)
         holder.question.apply {
             settings.javaScriptEnabled=true
             webViewClient= object : WebViewClient(){

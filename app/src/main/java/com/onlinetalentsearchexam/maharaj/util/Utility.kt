@@ -1,9 +1,12 @@
 
 package com.visiabletech.avision.maharaj.core.util
 
+import android.app.Activity
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.onlinetalentsearchexam.maharaj.retrofit.State
 import com.onlinetalentsearchexam.maharaj.view.CommonDialogs
@@ -19,7 +22,7 @@ object Utility {
         }
         return false
     }
-    fun performErrorState(context: AppCompatActivity, state: State.ErrorState, msg: String) {
+    fun performErrorState(context: Activity, state: State.ErrorState, msg: String) {
         Log.i(context.localClassName, state.exception.errorMessage)
         Log.d("TAG","state.error"+state.exception.errorMessage + state.exception.errorCode)
         val dialogs= CommonDialogs()
@@ -40,5 +43,6 @@ object Utility {
             view.isFocusableInTouchMode=true
         }
     }
+
 
 }

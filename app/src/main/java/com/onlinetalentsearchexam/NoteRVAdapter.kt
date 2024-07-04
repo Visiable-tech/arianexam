@@ -25,11 +25,11 @@ class NoteRVAdapter(
     //on below line we are creating a view holder class.
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //on below line we are creating an initializing all our variables which we have added in layout file.
-        val noteTV = itemView.findViewById<WebView>(R.id.idTVNote)
-        val dateTV = itemView.findViewById<TextView>(R.id.idTVDate)
+        val noteTV = itemView.findViewById<WebView>(R.id.questionWebview)
+        val dateTV = itemView.findViewById<TextView>(R.id.givenAnswer)
 //        val viewAll = itemView.findViewById<ImageView>(R.id.viewAll)
 //        val closeAll = itemView.findViewById<ImageView>(R.id.closeAll)
-        val cardBack = itemView.findViewById<CardView>(R.id.cardBack)
+        val cardBack = itemView.findViewById<CardView>(R.id.cardRoot)
         val attempt = itemView.findViewById<ImageView>(R.id.attempt)
         val notAttempt = itemView.findViewById<ImageView>(R.id.notAttempt)
         var radio1= itemView.findViewById<RadioButton>(R.id.radio1)
@@ -48,7 +48,7 @@ class NoteRVAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         //inflating our layout file for each item of recycler view.
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.note_rv_item,
+            R.layout.customview_question_finaldialog,
             parent, false
         )
         return ViewHolder(itemView)

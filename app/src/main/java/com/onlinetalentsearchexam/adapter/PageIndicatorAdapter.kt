@@ -9,12 +9,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.arianinstitute.R
 import com.onlinetalentsearchexam.Note
+import com.onlinetalentsearchexam.maharaj.data.models.Question
 
-class PageIndicatorAdapter(context: Context,listener: PageIndicatorListener): RecyclerView.Adapter<PageIndicatorAdapter.ViewHolder>() {
-    private var allNotes = ArrayList<Note>()
+class PageIndicatorAdapter(var context: Context,listener: PageIndicatorListener,var data:List<Question>  = listOf()): RecyclerView.Adapter<PageIndicatorAdapter.ViewHolder>() {
     lateinit var listener: PageIndicatorListener
     var selectedPosition=0
-    lateinit var context: Context
     init {
         this.listener=listener
         this.context=context
@@ -33,14 +32,14 @@ class PageIndicatorAdapter(context: Context,listener: PageIndicatorListener): Re
     }
 
     override fun getItemCount(): Int {
-        return allNotes.size
-    }
-    fun updateData(notes:List<Note>){
-        allNotes.clear(); allNotes.addAll(notes)
-        notifyDataSetChanged()
+        return data.size
     }
     fun updatePosition(pos:Int){
         selectedPosition=pos
+        notifyDataSetChanged()
+    }
+    fun updateData(data:List<Question>){
+        this.data=data
         notifyDataSetChanged()
     }
 
@@ -51,13 +50,13 @@ class PageIndicatorAdapter(context: Context,listener: PageIndicatorListener): Re
             selectedPosition=position
         })
 
-        if (allNotes.get(position).SelAnsID=="0"){
+        if (data.get(position).selectedAnsId=="0"){
             holder.rootview.setCardBackgroundColor(context.resources.getColor(R.color.lightred1,null))
         }else{
             holder.rootview.setCardBackgroundColor(context.resources.getColor(R.color.green,null))
         }
         if(selectedPosition==position){
-            holder.rootview.setCardBackgroundColor(context.resources.getColor(R.color.themecolor,null))
+            holder.rootview.setCardBackgroundColor(context.resources.getColor(R.color.gray,null))
         }
     }
 }

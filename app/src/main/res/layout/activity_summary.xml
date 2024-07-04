@@ -23,7 +23,7 @@
         android:textStyle="bold"
         android:text="@string/overview"/>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notesRV"
+        android:id="@+id/questionRecyclerview"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="50dp"
         android:layout_below="@+id/overView"

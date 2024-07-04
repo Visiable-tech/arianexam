@@ -1,6 +1,6 @@
 package com.avision.commons
 import com.onlinetalentsearchexam.model.Login
-import com.onlinetalentsearchexam.model.SendDataModel
+import com.onlinetalentsearchexam.maharaj.data.models.QuizAnsSubmitRequest
 import com.onlinetalentsearchexam.model.SubmitTest
 import com.onlinetalentsearchexam.model.examtest.Examtest
 import com.onlinetalentsearchexam.model.savequestion.SaveQus
@@ -28,7 +28,7 @@ interface ApiInterface {
     @POST("submit_test")
     fun submit_test(@Body body: RequestBody?): Call<SubmitTest>
     @POST("submit_test")
-    fun submitTest(@Body data: SendDataModel): Call<Void>
+    fun submitTest(@Body data: QuizAnsSubmitRequest): Call<Void>
 
     @POST("view_result")
     fun view_result(@Body body: RequestBody?): Call<ViewResult>

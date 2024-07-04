@@ -3,6 +3,7 @@ package com.onlinetalentsearchexam
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityExamFinishedBinding
 import com.onlinetalentsearchexam.maharaj.CorrectAnsActivity
@@ -17,6 +18,8 @@ class ExamFinishedActivity : AppCompatActivity() {
         window.statusBarColor=getColor(R.color.white)
 
         mBinding.apply {
+
+            correctAns.visibility= View.GONE  //temporary
             correctAns.setOnClickListener{
                 startActivity(Intent(this@ExamFinishedActivity,CorrectAnsActivity::class.java))
             }

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.AdapterView
@@ -164,6 +165,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun saveAndGotoNextPage( id:String){
         Paper.book().write("userid",id)
+        Log.d("TAGGG","userid:"+id)
         Paper.book().write("login",1)
         val intent= Intent(this@LoginActivity,InstructionActivity::class.java)
         startActivity(intent)

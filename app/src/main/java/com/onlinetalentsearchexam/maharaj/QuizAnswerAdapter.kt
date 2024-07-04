@@ -7,24 +7,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.arianinstitute.R
 import com.arianinstitute.databinding.CustomviewAnsBinding
-import com.arianinstitute.databinding.QuestionListitemBinding
-import com.onlinetalentsearchexam.maharaj.data.models.Ans
-import com.onlinetalentsearchexam.maharaj.data.models.CorrectAnsResponse
-import com.onlinetalentsearchexam.maharaj.data.models.QnA
+import com.onlinetalentsearchexam.maharaj.data.models.Question
 
-class AnswersAdapter(val context: Context, var data: QnA) : RecyclerView.Adapter<AnswersAdapter.ViewHolder>() {
+class QuizAnswerAdapter(val context: Context, var quesPos:Int, var data: Question, var listener:QuestionAnswerButtonsListener) : RecyclerView.Adapter<QuizAnswerAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: CustomviewAnsBinding) : RecyclerView.ViewHolder(binding.root){
         fun bindItem(position: Int){
             data.ans_arr!![position].apply {
                 binding.ans.text= Html.fromHtml(answer)
                 binding.number.text=(position+1).toString()
-                if(ans_status==1)
-                    binding.layoutRoot.setBackgroundColor(context.getColor(R.color.green))
-                else
-                    binding.layoutRoot.setBackgroundColor(context.getColor(R.color.white))
+                if(data.selectedAnsId==answer_id) {
+                    binding.layoutRoot.setBackgroundColor(context.getColor(R.color.gray))
+                    binding.ans.setTextColor(context.getColor(R.color.white))
+                }else
+                    binding.layoutRoot.setBackgroundColor(context.getColor(com.google.android.material.R.color.mtrl_btn_transparent_bg_color))
             }
-
+            binding.layoutRoot.setOnClickListener{
+                listener.onAnswerClick(position, quesPos,data)
+            }
         }
     }
 
@@ -36,6 +36,7 @@ class AnswersAdapter(val context: Context, var data: QnA) : RecyclerView.Adapter
         holder.bindItem(position)
     }
     override fun getItemCount(): Int {
-        return data.ans_arr!!.size
+        return data.ans_arr?.size ?: 0
     }
+
 }
