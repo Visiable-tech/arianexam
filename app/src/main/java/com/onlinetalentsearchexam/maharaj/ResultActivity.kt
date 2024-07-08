@@ -65,6 +65,8 @@ class ResultActivity : AppCompatActivity() {
                 mBinding.correct.text=correct.toString()
                 mBinding.incorrect.text=incorrect.toString()
                 mBinding.totalQuestion.text=(correct!! + incorrect!!).toString()
+                mBinding.outOf.text=(correct!! + incorrect!!).toString()
+                mBinding.totalMarks.text=correct.toString()
                 initPieChart(data.data)
             }
         }

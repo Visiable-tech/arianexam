@@ -9,5 +9,5 @@ data class ResultResponse (
 data class Result (
     val correct: Int? = null,
     val incorrect: Int? = null,
-    val exam_id: String? = null
+    val exam_id: String? = null,
 )

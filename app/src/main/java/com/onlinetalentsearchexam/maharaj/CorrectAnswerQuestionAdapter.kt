@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arianinstitute.databinding.CustomviewQuestionBinding
 import com.onlinetalentsearchexam.maharaj.data.models.QnA
+import com.onlinetalentsearchexam.maharaj.data.models.Question
 
-class CorrectAnswerQuestionAdapter(val contxt: Context, var data: List<QnA>) : RecyclerView.Adapter<CorrectAnswerQuestionAdapter.ViewHolder>() {
+class CorrectAnswerQuestionAdapter(val contxt: Context, var data: List<Question>) : RecyclerView.Adapter<CorrectAnswerQuestionAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: CustomviewQuestionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bindItem(position: Int){

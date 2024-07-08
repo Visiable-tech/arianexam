@@ -39,9 +39,11 @@ import com.google.gson.Gson
 import com.onlinetalentsearchexam.maharaj.FinalDialogQuestionAdapter
 import com.onlinetalentsearchexam.maharaj.QuizQuestionAdapter
 import com.onlinetalentsearchexam.maharaj.QuestionAnswerButtonsListener
+import com.onlinetalentsearchexam.maharaj.data.models.CommonResponse
 import com.onlinetalentsearchexam.maharaj.data.models.Question
 import com.onlinetalentsearchexam.maharaj.data.models.QuizAnsSubmitResponse
 import com.onlinetalentsearchexam.maharaj.data.models.QuizQuestionResponse
+import com.onlinetalentsearchexam.maharaj.data.models.QuizResultSubmitRequest
 import com.onlinetalentsearchexam.maharaj.retrofit.State
 import com.onlinetalentsearchexam.maharaj.viewmodels.ExamViewModel
 import com.visiabletech.avision.maharaj.core.extension.createPartFromString
@@ -91,6 +93,7 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
         viewModel.apply {
             observe(questionAnswerResponse,::onQuestionAnswerReceive)
             observe(quizAnsSubmitResponse,::onQuizAnsSubmitResponseReceive)
+            observe(quizResultSubmitResponse,::onQuizResultSubmitResponse)
 
             getQuestionAnswer(map)
         }
@@ -150,6 +153,22 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
             }
             is State.DataState -> {
                 val intent=Intent(this@StartTestActivity, ExamFinishedActivity::class.java)
+                intent.putExtra("data",Gson().toJson(mainData))
+                startActivity(intent)
+                finishAffinity()
+            }
+            else -> {}
+        }
+    }
+    private fun onQuizResultSubmitResponse(state: State<CommonResponse>?){
+        when (state) {
+            is State.ErrorState -> {
+                Utility.performErrorState(this,state, "Failed")
+                finalSubmissionProgressBar?.visibility=View.INVISIBLE
+            }
+            is State.DataState -> {
+                val intent=Intent(this@StartTestActivity, ExamFinishedActivity::class.java)
+                    .putExtra("data",Gson().toJson(mainData))
                 startActivity(intent)
                 finishAffinity()
             }
@@ -200,60 +219,6 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
         val alert = builder1.create()
         alert.show()
     }
-
-    private fun finishExam() {
-        finalSubmissionProgressBar?.visibility=View.VISIBLE
-        Paper.book().write("examgiven",true)
-        viewModal.allNotes.observe(this@StartTestActivity, Observer { list ->
-            val retro = Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addCallAdapterFactory(
-                    RxJava2CallAdapterFactory.createWithScheduler(
-                        Schedulers.io())) //added this line by sushovon
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val retroInstance= retro.create(ApiInterface::class.java)
-            val studentId = Paper.book().read("userid","")
-
-            val detail= listOf(DetailsItem(studentId!!.toInt(),Global.exam_taken_id1))
-            var qusID="";
-            var selectedAnsId="";
-            val qusdata= arrayListOf<QusdataItem>()
-            for (li in mainData){
-                qusID=li.question_id!!
-                selectedAnsId=li.selectedAnsId
-                qusdata.add(QusdataItem(qusID,selectedAnsId))
-            }
-
-            val dataToSend = QuizAnsSubmitRequest(detail,qusdata)
-            val call = retroInstance.submitTest(dataToSend)
-            call.enqueue(object : Callback<Void>{
-                override fun onResponse(
-                    call: Call<Void>,
-                    response: Response<Void>
-                ) {
-                    if (response.isSuccessful){
-                        val intent=Intent(this@StartTestActivity, ExamFinishedActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }else{
-
-                    }
-                }
-
-                override fun onFailure(
-                    call: Call<Void>,
-                    t: Throwable
-                ) {
-                    finalSubmissionProgressBar?.visibility=View.GONE
-                    Log.d(localClassName,t.localizedMessage)
-                    Toast.makeText(this@StartTestActivity,t.localizedMessage,Toast.LENGTH_LONG).show()
-                }
-            })
-
-        })
-    }
 //    private fun finishExam() {
 //        finalSubmissionProgressBar?.visibility=View.VISIBLE
 //
@@ -268,7 +233,26 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
 //
 //    viewModel.quizAnsSubmit(quizAnsSubmitRequest)
 //    }
+    fun finishExam() {
+            finalSubmissionProgressBar?.visibility=View.VISIBLE
+            val quizResultSubmitRequest = QuizResultSubmitRequest()
+            quizResultSubmitRequest.apply {
+                exam_id=Global.examid
+                exam_taken_id=Global.exam_taken_id1
+                student_id=Paper.book().read("userid","")
 
+                for (question in mainData){
+                    for(ans in question.ans_arr!!){
+                        if(question.selectedAnsId==ans.answer_id && ans.ans_status.equals("1")){
+                            correct++
+                        }
+                    }
+                }
+                incorrect=mainData.size-correct
+                Log.d("TAGGG",quizResultSubmitRequest.toString())
+            }
+            viewModel.quizResultSubmit(quizResultSubmitRequest)
+    }
     private fun countDown() {
         val countDownTimer = object : CountDownTimer((60*Global.time*1000), 1000) {
             override fun onTick(leftTimeInMilliseconds: Long) {

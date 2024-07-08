@@ -1,10 +1,12 @@
 package com.onlinetalentsearchexam.maharaj.apiservice
+import com.onlinetalentsearchexam.maharaj.data.models.CommonResponse
 import com.onlinetalentsearchexam.maharaj.data.models.CorrectAnsResponse
 import com.onlinetalentsearchexam.maharaj.data.models.IntroResponse
 import com.onlinetalentsearchexam.maharaj.data.models.QuizAnsSubmitRequest
 import com.onlinetalentsearchexam.maharaj.data.models.QuizAnsSubmitResponse
 import com.onlinetalentsearchexam.maharaj.data.models.QuizDetailResponse
 import com.onlinetalentsearchexam.maharaj.data.models.QuizQuestionResponse
+import com.onlinetalentsearchexam.maharaj.data.models.QuizResultSubmitRequest
 import com.onlinetalentsearchexam.maharaj.data.models.ResultResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -35,6 +37,8 @@ interface ApiService {
     @POST("view_result")
     suspend fun getResult(@PartMap() partMap: MutableMap<String, RequestBody>): ResultResponse
     @POST("submit_test")
-    fun quizAnsSubmit(@Body data: QuizAnsSubmitRequest): QuizAnsSubmitResponse
+    suspend fun quizAnsSubmit(@Body data: QuizAnsSubmitRequest): QuizAnsSubmitResponse
 
+    @POST("save_result")
+    suspend fun quizResultSubmit(@Body data: QuizResultSubmitRequest): CommonResponse
 }

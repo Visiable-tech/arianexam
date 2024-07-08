@@ -18,7 +18,6 @@ import com.onlinetalentsearchexam.StartTestActivity
 import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.onlinetalentsearchexam.maharaj.ResultActivity
-import com.onlinetalentsearchexam.maharaj.data.models.QuizDetail
 import com.onlinetalentsearchexam.maharaj.data.models.QuizDetailResponse
 import com.onlinetalentsearchexam.maharaj.retrofit.State
 import com.onlinetalentsearchexam.maharaj.viewmodels.ExamViewModel

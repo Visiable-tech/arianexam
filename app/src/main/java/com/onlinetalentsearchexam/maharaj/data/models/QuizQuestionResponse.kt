@@ -17,6 +17,7 @@ data class Question (
 )
 
 data class Answers (
+    var ans_status: String?=null,
     var answer_id: String? = null,
     var answer: String? = null
 )
