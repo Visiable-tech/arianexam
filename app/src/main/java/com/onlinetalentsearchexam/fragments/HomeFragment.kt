@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
         if(data.status.equals("200")){
             val quizDetail= data.message!!.get(0)
 
-            Log.d("GGG",quizDetail.toString())
+            Log.d("TAGGG","student_id:"+Paper.book().read("userid",""))
             Log.d("TAGGG","exam taken id "+quizDetail.exam_taken_id)
             Log.d("TAGGG","exam id "+quizDetail.exam_id)
 

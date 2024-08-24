@@ -152,10 +152,7 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
                 finalSubmissionProgressBar?.visibility=View.INVISIBLE
             }
             is State.DataState -> {
-                val intent=Intent(this@StartTestActivity, ExamFinishedActivity::class.java)
-                intent.putExtra("data",Gson().toJson(mainData))
-                startActivity(intent)
-                finishAffinity()
+                uploadResult()
             }
             else -> {}
         }
@@ -176,6 +173,8 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
         }
     }
     fun initDataToView(data: QuizQuestionResponse){
+        Global.exam_taken_id1= data.message!![0].exam_taken_id.toString()
+        Log.d("TAGGG","exam_taken_id:"+data.message!![0].exam_taken_id.toString())
         mainData=data.message!!
         pageIndicatorAdapter.updateData(mainData)
         quizQuestionAdapter.updateData(mainData)
@@ -219,39 +218,39 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
         val alert = builder1.create()
         alert.show()
     }
-//    private fun finishExam() {
-//        finalSubmissionProgressBar?.visibility=View.VISIBLE
-//
-//            val studentId = Paper.book().read("userid","")
-//            val detail= listOf(DetailsItem(studentId!!.toInt(),Global.exam_taken_id1))
-//            val qusdata= arrayListOf<QusdataItem>()
-//            for (question in mainData){
-//                qusdata.add(QusdataItem(question.question_id!!,question.selectedAnsId))
-//            }
-//
-//            val quizAnsSubmitRequest = QuizAnsSubmitRequest(detail,qusdata)
-//
-//    viewModel.quizAnsSubmit(quizAnsSubmitRequest)
-//    }
-    fun finishExam() {
-            finalSubmissionProgressBar?.visibility=View.VISIBLE
-            val quizResultSubmitRequest = QuizResultSubmitRequest()
-            quizResultSubmitRequest.apply {
-                exam_id=Global.examid
-                exam_taken_id=Global.exam_taken_id1
-                student_id=Paper.book().read("userid","")
+    private fun finishExam() {
+        finalSubmissionProgressBar?.visibility=View.VISIBLE
 
-                for (question in mainData){
-                    for(ans in question.ans_arr!!){
-                        if(question.selectedAnsId==ans.answer_id && ans.ans_status.equals("1")){
-                            correct++
-                        }
+            val studentId = Paper.book().read("userid","")
+            val detail= listOf(DetailsItem(studentId!!.toInt(),Global.exam_taken_id1))
+            val qusdata= arrayListOf<QusdataItem>()
+            for (question in mainData){
+                qusdata.add(QusdataItem(question.question_id!!,question.selectedAnsId))
+            }
+
+            val quizAnsSubmitRequest = QuizAnsSubmitRequest(detail,qusdata)
+
+    viewModel.quizAnsSubmit(quizAnsSubmitRequest)
+    }
+    fun uploadResult() {
+        finalSubmissionProgressBar?.visibility=View.VISIBLE
+        val quizResultSubmitRequest = QuizResultSubmitRequest()
+        quizResultSubmitRequest.apply {
+            exam_id=Global.examid
+            exam_taken_id=Global.exam_taken_id1
+            student_id=Paper.book().read("userid","")
+
+            for (question in mainData){
+                for(ans in question.ans_arr!!){
+                    if(question.selectedAnsId==ans.answer_id && ans.ans_status.equals("1")){
+                        correct++
                     }
                 }
-                incorrect=mainData.size-correct
-                Log.d("TAGGG",quizResultSubmitRequest.toString())
             }
-            viewModel.quizResultSubmit(quizResultSubmitRequest)
+            incorrect=mainData.size-correct
+            Log.d("TAGGG",quizResultSubmitRequest.toString())
+        }
+        viewModel.quizResultSubmit(quizResultSubmitRequest)
     }
     private fun countDown() {
         val countDownTimer = object : CountDownTimer((60*Global.time*1000), 1000) {

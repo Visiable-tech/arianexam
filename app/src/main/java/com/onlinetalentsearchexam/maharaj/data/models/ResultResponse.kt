@@ -3,7 +3,7 @@ package com.onlinetalentsearchexam.maharaj.data.models
 data class ResultResponse (
     val status: String? = null,
     val message: String? = null,
-    val data: Result? = null
+    val data: List<Result>? = null
 )
 
 data class Result (

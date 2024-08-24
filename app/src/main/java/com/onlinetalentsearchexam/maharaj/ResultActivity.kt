@@ -2,6 +2,7 @@ package com.onlinetalentsearchexam.maharaj
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.arianinstitute.R
@@ -36,7 +37,9 @@ class ResultActivity : AppCompatActivity() {
         map.apply {
             put("exam_taken_id", createPartFromString(Global.exam_taken_id1!!))
             put("student_id", createPartFromString(studentId!!))
+            put("exam_id", createPartFromString(Global.examid))
         }
+        Log.d("TAGGG","examtakenid:"+Global.exam_taken_id1+" studentId:"+studentId)
         viewModel.apply { 
             getResult(map)
             observe(resultResponse,::onReceiveResult)
@@ -61,13 +64,13 @@ class ResultActivity : AppCompatActivity() {
             Toast.makeText(this,data.message,Toast.LENGTH_LONG).show()
             onBackPressed()
         }else{
-            data.data.apply {
+            data.data[0].apply {
                 mBinding.correct.text=correct.toString()
                 mBinding.incorrect.text=incorrect.toString()
                 mBinding.totalQuestion.text=(correct!! + incorrect!!).toString()
                 mBinding.outOf.text=(correct!! + incorrect!!).toString()
                 mBinding.totalMarks.text=correct.toString()
-                initPieChart(data.data)
+                initPieChart(data.data[0])
             }
         }
     }
