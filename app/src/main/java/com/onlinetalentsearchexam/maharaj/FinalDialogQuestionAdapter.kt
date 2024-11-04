@@ -1,6 +1,7 @@
 package com.onlinetalentsearchexam.maharaj
 
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +38,7 @@ class FinalDialogQuestionAdapter(val contxt: Context, var data: List<Question> =
                     adapter=FinalDialogAnswerAdapter(contxt,position,data[position],listener)
                 }
                 if(this.selectedAnsId!="0") {
-                    binding.givenAnswer.text = selectedAns
+                    binding.givenAnswer.text = Html.fromHtml(selectedAns)
                     binding.ansRecyclerView.visibility = View.GONE
                     binding.attempt.visibility=View.VISIBLE
                     binding.notAttempt.visibility=View.INVISIBLE

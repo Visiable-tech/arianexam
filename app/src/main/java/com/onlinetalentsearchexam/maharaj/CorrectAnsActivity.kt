@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityCorrectAnsBinding
 import com.google.gson.Gson
+import com.onlinetalentsearchexam.DataHolder
 import com.onlinetalentsearchexam.Global
 import com.onlinetalentsearchexam.maharaj.data.models.CorrectAnsResponse
 import com.onlinetalentsearchexam.maharaj.data.models.Question
@@ -28,7 +29,8 @@ class CorrectAnsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding= ActivityCorrectAnsBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        data= Gson().fromJson(intent.getStringExtra("data"),Array<Question>::class.java).toList()
+//        data= Gson().fromJson(intent.getStringExtra("data"),Array<Question>::class.java).toList()
+        data=DataHolder.data
         if(data!=null){
             initDataToView()
         }

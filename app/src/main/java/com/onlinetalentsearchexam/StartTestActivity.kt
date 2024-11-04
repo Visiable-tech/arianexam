@@ -164,8 +164,9 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
                 finalSubmissionProgressBar?.visibility=View.INVISIBLE
             }
             is State.DataState -> {
+                DataHolder.data=mainData
                 val intent=Intent(this@StartTestActivity, ExamFinishedActivity::class.java)
-                    .putExtra("data",Gson().toJson(mainData))
+//                    .putExtra("data",Gson().toJson(mainData))
                 startActivity(intent)
                 finishAffinity()
             }
@@ -309,4 +310,7 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
      }
 
 
+}
+object DataHolder {
+    var data: List<Question>? = null
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "347792412355",
+    "project_id": "online-talent-search-exam",
+    "storage_bucket": "online-talent-search-exam.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347792412355:android:093fcbb8b3447421831c76",
+        "android_client_info": {
+          "package_name": "com.onlinetalentsearchexam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV61IobyzWr1hXfCfdbxKtEx6h6wwc0Bk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

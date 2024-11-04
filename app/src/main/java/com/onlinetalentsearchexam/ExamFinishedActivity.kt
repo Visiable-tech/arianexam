@@ -18,22 +18,33 @@ class ExamFinishedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding= ActivityExamFinishedBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        data=Gson().fromJson(intent.getStringExtra("data"),Array<Question>::class.java).toList()
+//        data=Gson().fromJson(intent.getStringExtra("data"),Array<Question>::class.java).toList()
+        data= DataHolder.data
         window.statusBarColor=getColor(R.color.white)
 
 
         mBinding.apply {
 
             correctAns.setOnClickListener{
-                startActivity(Intent(this@ExamFinishedActivity,CorrectAnsActivity::class.java).putExtra("data",Gson().toJson(data)))
+                val intent=Intent(this@ExamFinishedActivity,CorrectAnsActivity::class.java)
+//                    .putExtra("data",Gson().toJson(data))
+                startActivity(intent)
             }
 //            viewResult.setOnClickListener {
 //                startActivity(Intent(this@ExamFinishedActivity, ResultActivity::class.java))
 //            }
             goBackBtn.setOnClickListener {
-                startActivity(Intent(this@ExamFinishedActivity, DashboardActivity::class.java))
-                finish()
+                backpress()
             }
+
         }
+    }
+
+    override fun onBackPressed() {
+        backpress()
+    }
+    fun backpress(){
+        startActivity(Intent(this@ExamFinishedActivity, DashboardActivity::class.java))
+        finish()
     }
 }
