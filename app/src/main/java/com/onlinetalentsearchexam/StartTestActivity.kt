@@ -25,17 +25,16 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityStartTestBinding
-import com.onlinetalentsearchexam.adapter.PageIndicatorAdapter
-import com.onlinetalentsearchexam.adapter.PageIndicatorListener
 import com.onlinetalentsearchexam.commons.Constants
 import com.onlinetalentsearchexam.maharaj.data.models.DetailsItem
 import com.onlinetalentsearchexam.maharaj.data.models.QusdataItem
 import com.onlinetalentsearchexam.maharaj.data.models.QuizAnsSubmitRequest
-import com.onlinetalentsearchexam.utils.SnapHelperOneByOne
 import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.avision.commons.ApiInterface
 import com.google.gson.Gson
+import com.onlinetalentsearchexam.adapter.PageIndicatorAdapter
+import com.onlinetalentsearchexam.adapter.PageIndicatorListener
 import com.onlinetalentsearchexam.maharaj.FinalDialogQuestionAdapter
 import com.onlinetalentsearchexam.maharaj.QuizQuestionAdapter
 import com.onlinetalentsearchexam.maharaj.QuestionAnswerButtonsListener
@@ -61,7 +60,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
 @AndroidEntryPoint
-class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, PageIndicatorListener {
+class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener,
+    PageIndicatorListener {
     private lateinit var binding: ActivityStartTestBinding
     private val viewModel: ExamViewModel by viewModels()
     lateinit var mainData:List<Question>
@@ -75,7 +75,6 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
      var finalDialogTimer: TextView?=null
 
     lateinit var finish: Button
-    lateinit var viewModal: NoteViewModal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,7 +104,7 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
             rightArrow.setOnClickListener { onNext() }
             submitans.setOnClickListener { onNext() }
         }
-        val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
+        val linearSnapHelper = LinearSnapHelper()
         linearSnapHelper.attachToRecyclerView(binding.recyclerview)
         quizLayoutManger= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         pageIndicatorLayoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
@@ -123,11 +122,6 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
             layoutManager=pageIndicatorLayoutManager
         }
         countDown()
-        viewModal = ViewModelProvider(
-            this@StartTestActivity,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        ).get(NoteViewModal::class.java)
-        viewModal.clearData()
     }
 
     override fun onBackPressed() {
@@ -301,8 +295,8 @@ class StartTestActivity : AppCompatActivity(), QuestionAnswerButtonsListener, Pa
      override fun onAnswerClick(ansPos: Int, quesPos: Int, question:Question ) {
         mainData[quesPos].selectedAnsId=question.ans_arr!![ansPos].answer_id!!
          mainData[quesPos].selectedAns=question.ans_arr!![ansPos].answer!!
-         quizQuestionAdapter.notifyItemChanged(quesPos)
-        pageIndicatorAdapter.notifyItemChanged(quesPos)
+//         quizQuestionAdapter.notifyItemChanged(quesPos)
+//        pageIndicatorAdapter.notifyItemChanged(quesPos)
          if(::finalDialogQuestionAdapter.isInitialized)
              finalDialogQuestionAdapter.notifyItemChanged(quesPos)
 

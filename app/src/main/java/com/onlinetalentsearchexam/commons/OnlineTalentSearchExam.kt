@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import com.onlinetalentsearchexam.database.ArianDatabase
 import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
 
@@ -16,7 +15,6 @@ class OnlineTalentSearchExam: Application() {
         super.onCreate()
         mInstance = this
         Paper.init(applicationContext);
-        dbInstance= ArianDatabase.getInstance(this)
     }
 
 
@@ -31,17 +29,12 @@ class OnlineTalentSearchExam: Application() {
 
     companion object {
         private var mInstance: OnlineTalentSearchExam? = null
-        private lateinit var dbInstance : ArianDatabase
 
         @Synchronized
         fun getInstance(): OnlineTalentSearchExam? {
             return mInstance
         }
 
-        @Synchronized
-        fun getDB():ArianDatabase{
-            return dbInstance
-        }
 
 
         @Synchronized

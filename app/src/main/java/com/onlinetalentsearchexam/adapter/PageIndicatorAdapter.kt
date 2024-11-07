@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.arianinstitute.R
-import com.onlinetalentsearchexam.Note
 import com.onlinetalentsearchexam.maharaj.data.models.Question
 
 class PageIndicatorAdapter(var context: Context,listener: PageIndicatorListener,var data:List<Question>  = listOf()): RecyclerView.Adapter<PageIndicatorAdapter.ViewHolder>() {

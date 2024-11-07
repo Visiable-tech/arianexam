@@ -12,7 +12,6 @@
     <androidx.core.widget.NestedScrollView
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomButtonsLayout"
         android:layout_height="0dp">
 
         <LinearLayout

@@ -133,7 +133,9 @@ class HomeFragment : Fragment() {
             if(Global.status=="0"){
                 val intent= Intent(activity, StartTestActivity::class.java)
                 startActivity(intent)
-                requireActivity().finish()
+                requireActivity().finish(
+
+                )
             }else if(Global.status=="3"){
                 startActivity(Intent(requireContext(), ResultActivity::class.java))
             }else{

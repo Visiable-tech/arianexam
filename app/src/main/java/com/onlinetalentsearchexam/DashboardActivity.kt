@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.arianinstitute.R
 import com.arianinstitute.databinding.ActivityDashboardBinding
-import com.arianinstitute.databinding.CustomviewIntroBinding
 import com.onlinetalentsearchexam.commons.Constants
 import com.onlinetalentsearchexam.fragments.HomeFragment
 import com.onlinetalentsearchexam.maharaj.data.models.IntroResponse

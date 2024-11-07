@@ -19,10 +19,14 @@ class QuizAnswerAdapter(val context: Context, var quesPos:Int, var data: Questio
                 if(data.selectedAnsId==answer_id) {
                     binding.layoutRoot.setBackgroundColor(context.getColor(R.color.gray))
                     binding.ans.setTextColor(context.getColor(R.color.white))
-                }else
+                }else{
+                    binding.ans.setTextColor(context.getColor(R.color.black))
                     binding.layoutRoot.setBackgroundColor(context.getColor(com.google.android.material.R.color.mtrl_btn_transparent_bg_color))
+
+                }
             }
             binding.layoutRoot.setOnClickListener{
+                notifyDataSetChanged()
                 listener.onAnswerClick(position, quesPos,data)
             }
         }

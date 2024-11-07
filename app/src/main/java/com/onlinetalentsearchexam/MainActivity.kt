@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
 
         binding=DataBindingUtil.setContentView(this, R.layout.activity_main)
         appUpdateManager = AppUpdateManagerFactory.create(this)
-        checkForUpdates()
         Handler(Looper.getMainLooper()).postDelayed({
             if(Paper.book().read("login",0)==1){
                 val intent = Intent(this, InstructionActivity::class.java)
@@ -43,46 +42,5 @@ class MainActivity : AppCompatActivity() {
 
         }, 3000)
     }
-    private fun checkForUpdates() {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                // Request the update
-                try {
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
-                        this,
-                        MY_REQUEST_CODE
-                    )
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == MY_REQUEST_CODE) {
-            if (resultCode != RESULT_OK) {
-                // Show dialog to force the update
-                showUpdateDialog()
-            }
-        }
-    }
-
-    private fun showUpdateDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Update Required")
-            .setMessage("This app requires an update to continue. Please update to the latest version.")
-            .setPositiveButton("Update") { _, _ ->
-                checkForUpdates()
-            }
-            .setNegativeButton("Exit") { _, _ ->
-                finish()
-            }
-            .setCancelable(false)
-            .show()
-    }
 }
