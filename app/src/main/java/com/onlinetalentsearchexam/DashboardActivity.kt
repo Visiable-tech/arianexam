@@ -117,6 +117,7 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     // override the onBackPressed() function to close the Drawer when the back button is clicked
+    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
     override fun onBackPressed() {
         if (this.mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.mBinding.drawerLayout.closeDrawer(GravityCompat.START)

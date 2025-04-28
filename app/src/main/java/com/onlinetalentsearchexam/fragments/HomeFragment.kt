@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
 
         return rootView
     }
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(ExamViewModel::class.java)
